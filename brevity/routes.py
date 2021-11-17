@@ -1,7 +1,10 @@
+import os
+import secrets
+from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
-from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm
-from flaskblog.models import User, Post
+from brevity import app, db, bcrypt
+from brevity.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from brevity.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
 posts = [
@@ -63,8 +66,43 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@app.route("/account")
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)       # To randomize the name of the uploaded image so that the name doesn't collide with the already uploaded ones 
+    _, f_ext = os.path.splitext(form_picture.filename)   # Splits the filename and extension in 2 part.
+                                            # We don't need the filename. That's why we represent it with '_'.
+                                            #     To let the editor know that it's unused.
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static', 'profile_pics', picture_fn )
+    
+    output_size = (125,125)
+    i = Image.open(form_picture)            # PIL package
+    i.thumbnail(output_size)
+    i.save(picture_path)
+                                            # Delete previous picture while uploading new one.
+    prev_picture = os.path.join(app.root_path,'static','profile_pics',current_user.image_file)   
+    if os.path.exists(prev_picture) and os.path.basename(prev_picture)!='default.jpg':
+        os.remove(prev_picture)
+    return picture_fn
+
+
+@app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for('static', filename = 'profile_pics/' + current_user.image_file)
+    return render_template('account.html', title='Account',
+                            image_file = image_file, form = form)
 
