@@ -7,11 +7,27 @@ sys.path.append('../brevity')
 from brevity import db
 from brevity.models import Post, load_user
 
+
+"""
+scrape data from url
+"""
+# import requests
+# def scrape_json(url):
+#     posts = requests.get(url, headers = { "Accept" : "application/json" }).json()
+#     return posts
+
+"""
+read data from file
+"""
 def read_file(filename):
     with open(filename) as f:
         data = json.load(f)
     return data
 
+
+"""
+insert post in database
+"""
 def insert_bulk_post(posts):
     for p in posts:
         post = Post(title = p.get("title"), content = p.get("content"), author = load_user(p.get("user_id")))
