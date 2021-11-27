@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -22,4 +22,11 @@ app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASS')
 mail = Mail(app)
 
-from brevity import routes
+from brevity.main.routes import main
+from brevity.users.routes import users
+from brevity.posts.routes import posts
+
+app.register_blueprint(main)
+app.register_blueprint(users)
+app.register_blueprint(posts)
+
