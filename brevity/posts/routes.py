@@ -21,10 +21,12 @@ def new_post():
     return render_template('create_post.html', title = 'New Post', form = form, legend='New Post')
 
 
-@posts.route("/post/<int:post_id>", methods=['GET', 'POST'])
+@posts.route("/post/<int:post_id>", methods=['GET', 'POST'])            #'int:' imposes that post_id must be int.
 def post(post_id):
-    post = Post.query.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)                               #get(id) is used to query the db through Primary key. 
+                                                                        #get_or_404(id) to return 404 error instead of None in case of missing entry.
     return render_template('post.html', title="post.title", post=post)
+
 
 
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
@@ -56,4 +58,4 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
-    return redirect(url_for('posts.home'))
+    return redirect(url_for('main.home'))

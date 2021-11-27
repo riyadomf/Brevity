@@ -6,10 +6,11 @@ main = Blueprint('main', '__name__')
 @main.route("/")
 @main.route("/home")
 def home():
-    page = request.args.get('page', 1, type=int)      
+    page = request.args.get('page', 1, type=int)      # type = int : to raise value error when someone passes anything other than int.
     posts =  Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', posts = posts)
-                                                    
+                                                    #paginate() returns a pagination object which has necessary attributes and methods.
+                                                    #dir(object): returns all the attributes and methods of that object
 
 @main.route("/about")
 def about():

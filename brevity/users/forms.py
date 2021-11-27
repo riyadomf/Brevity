@@ -27,6 +27,13 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
 
+'''                                                    #Validation template
+    def validate_field(self, field):
+        if True:
+            raise ValidationError('Validation Message')
+'''
+
+
 class LoginForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])

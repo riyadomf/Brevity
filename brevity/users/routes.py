@@ -52,7 +52,9 @@ def logout():
 @login_required
 def account():
     form = UpdateAccountForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit():                       # if the request method is 'POST' then we need to redirect 
+                                                        # instead of returning a web page directly.
+                                                        # so that when we reload, the form doesn't get resubmitted. (POST/REDIRECT/GET pattern)
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file

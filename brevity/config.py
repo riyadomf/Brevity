@@ -12,7 +12,7 @@ import os
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')                   #secrets.token_hex(16)
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False                 #supresses warning
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True

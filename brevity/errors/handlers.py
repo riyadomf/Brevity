@@ -5,7 +5,7 @@ errors = Blueprint('errors', __name__)
 
 @errors.app_errorhandler(404)
 def error_404(error):
-    return render_template('errors/404.html'),  404
+    return render_template('errors/404.html'),  404          #2nd return value is status code. Default return value is 200.
 
 
 @errors.app_errorhandler(403)
