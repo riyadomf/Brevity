@@ -1,13 +1,16 @@
 import os
+from dotenv import load_dotenv
 
-# If the .env file is in the root folder then Flask by default calls load_dotenv()
+# If we call load_dotenv() then flask searches for .env file in root directory
+load_dotenv()
 
-# If we call load_dotenv() then flask searches for .env file in current directory
-# from dotenv import load_dotenv
-# load_dotenv()
-
+# If we give a path inside load_dotenv() then flask searches for .env file in that directory
 # basedir = os.path.abspath(os.path.dirname(__file__))
 # load_dotenv(os.path.join(basedir, ".env"))
+
+
+
+
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')                   #secrets.token_hex(16)
