@@ -12,6 +12,7 @@
                 <p class="article-content">{{ post.content[:200] }}<span>&#8230;</span></p>                    <!-- limit the post display for long posts-->
             </div>                                                                                             <!-- ellipsis: for text overflow-->
         </article>
+        
     {% endfor %}
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}         <!-- right_current includes the current page. -->
         {% if page_num %}
