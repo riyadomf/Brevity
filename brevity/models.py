@@ -1,9 +1,10 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app 
+from flask import current_app
+from sqlalchemy.orm import backref 
 from brevity import db, login_manager
 from brevity.posts.forms import CommentForm
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 
 
                                                                                     #we need to provide a user_loader callback. This callback is used to 
@@ -23,7 +24,46 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)                    #By default SQLAlchemy guess the relationship to be one to many as posts returns a list of post.
                                                                                     #  If you would want to have a one-to-one relationship you can pass uselist=False to relationship().
-    commented = db.relationship('Comment', backref='author', lazy=True)                 
+    upvoted = db.relationship('Upvote', foreign_keys='Upvote.user_id', backref='user', lazy='dynamic')
+    downvoted = db.relationship('Downvote', foreign_keys='Downvote.user_id', backref='user', lazy='dynamic')
+    commented = db.relationship('Comment', backref='author', lazy=True)      
+
+    def upvote_post(self, post):
+        if not self.has_upvoted_post(post):
+            upvote = Upvote(user_id=self.id, post_id=post.id)
+            db.session.add(upvote)
+        current_user.remove_downvote(post)
+    
+    def remove_upvote(self, post):
+        if self.has_upvoted_post(post):
+            Upvote.query.filter_by(
+                user_id=self.id,
+                post_id=post.id).delete()
+
+    def has_upvoted_post(self, post):
+        return Upvote.query.filter(
+            Upvote.user_id == self.id,
+            Upvote.post_id == post.id).count() > 0
+
+    def downvote_post(self, post):
+        if not self.has_downvoted_post(post):
+            downvote = Downvote(user_id=self.id, post_id=post.id)
+            db.session.add(downvote)
+        current_user.remove_upvote(post)
+    
+    def remove_downvote(self, post):
+        if self.has_downvoted_post(post):
+            Downvote.query.filter_by(
+                user_id=self.id,
+                post_id=post.id).delete()
+
+    def has_downvoted_post(self, post):
+        return Downvote.query.filter(
+            Downvote.user_id == self.id,
+            Downvote.post_id == post.id).count() > 0
+    
+
+
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')                #user_id is the payload
@@ -49,11 +89,23 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    upvotes = db.relationship('Upvote', backref='post', lazy='dynamic')
+    downvotes = db.relationship('Downvote', backref='post', lazy='dynamic')
     comments = db.relationship('Comment', backref='post', lazy=True)
                                                                                     
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
                                                                                     #author can be used in Post object and it returns a User object.
+
+
+class Upvote(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+
+
+class Downvote(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
 
 
 class Comment(db.Model):

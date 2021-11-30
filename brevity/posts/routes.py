@@ -22,6 +22,26 @@ def new_post():
     return render_template('create_post.html', title = 'New Post', form = form, legend='New Post')
 
 
+
+@posts.route('/post/<int:post_id>/vote/<action>', methods=['GET', 'POST'])
+@login_required
+def vote_action(post_id, action):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    if action == 'upvote':
+        current_user.upvote_post(post)
+        db.session.commit()
+    elif action == 'remove_upvote':
+        current_user.remove_upvote(post)
+        db.session.commit()
+    elif action == 'downvote':
+        current_user.downvote_post(post)
+        db.session.commit()
+    elif action == 'remove_downvote':
+        current_user.remove_downvote(post)
+        db.session.commit()
+    return redirect(request.referrer)
+
+
 @posts.route("/post/<int:post_id>", methods=['GET', 'POST'])            #'int:' imposes that post_id must be int.
 def post(post_id):
     form = CommentForm()

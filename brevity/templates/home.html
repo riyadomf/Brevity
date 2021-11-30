@@ -11,12 +11,31 @@
                 <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content[:200] }}<span>&#8230;</span></p>                    <!-- limit the post display for long posts-->
                 
-                <!--like comment div-->
-                <div class="d-flex flex-row fs-12">
-                    <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">12 Likes</span></div>
-                    <div class="like p-2 cursor"><i class="fa fa-thumbs-o-down"></i><span class="ml-1">Unlike</span></div>
-                    <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.post', post_id=post.id) }}">Comment</a></span></div>  
-                </div>
+                <!--like, comment div-->
+                {% if current_user.is_authenticated %}
+                    <div class="d-flex flex-row fs-12">
+                        {% if current_user.has_upvoted_post(post) %}
+                            <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up btn-outline-info "></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.vote_action', post_id=post.id, action='remove_upvote')}}">{{post.upvotes.count()}} Upvotes</a></span></div>
+                        {% else %}
+                            <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.vote_action', post_id=post.id, action='upvote')}}">{{post.upvotes.count()}} Upvotes</a></span></div>
+                        {% endif %}
+                        
+                        {% if current_user.has_downvoted_post(post) %}
+                            <div class="like p-2 cursor"><i class="fa fa-thumbs-o-down btn-outline-info "></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.vote_action', post_id=post.id, action='remove_downvote')}}">{{post.downvotes.count()}} Downvotes</a></span></div>
+                        {% else %}
+                            <div class="like p-2 cursor"><i class="fa fa-thumbs-o-down"></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.vote_action', post_id=post.id, action='downvote')}}">{{post.downvotes.count()}} Downvotes</a></span></div>
+                        {% endif %}
+                        
+                        <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.post', post_id=post.id) }}">Comment</a></span></div>  
+                    </div>
+                {% else %}
+                    <div class="d-flex flex-row fs-12">
+                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.vote_action', post_id=post.id, action='upvote')}}">{{post.upvotes.count()}} Upvotes</a></span></div>                      
+                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-down"></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.vote_action', post_id=post.id, action='downvote')}}">{{post.downvotes.count()}} Downvotes</a></span></div>
+                
+                        <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.post', post_id=post.id) }}">Comment</a></span></div>  
+                    </div>
+                {% endif %}
                 
             </div>
                                                                                               <!-- ellipsis: for text overflow-->
