@@ -10,9 +10,17 @@
                 </div>
                 <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content[:200] }}<span>&#8230;</span></p>                    <!-- limit the post display for long posts-->
-            </div>                                                                                             <!-- ellipsis: for text overflow-->
+                
+                <!--like comment div-->
+                <div class="d-flex flex-row fs-12">
+                    <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">12 Likes</span></div>
+                    <div class="like p-2 cursor"><i class="fa fa-thumbs-o-down"></i><span class="ml-1">Unlike</span></div>
+                    <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class="mr-2" href="{{ url_for('posts.post', post_id=post.id) }}">Comment</a></span></div>  
+                </div>
+                
+            </div>
+                                                                                              <!-- ellipsis: for text overflow-->
         </article>
-        
     {% endfor %}
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}         <!-- right_current includes the current page. -->
         {% if page_num %}

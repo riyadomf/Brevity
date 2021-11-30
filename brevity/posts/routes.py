@@ -2,10 +2,11 @@ from flask import (render_template, url_for, flash, redirect,
                     request, abort, Blueprint)
 from flask_login import login_required, current_user
 from brevity import db
-from brevity.posts.forms import PostForm
-from brevity.models import Post
+from brevity.posts.forms import CommentForm, PostForm
+from brevity.models import Comment, Post
 
 posts = Blueprint('posts', '__name__')
+
 
 
 @posts.route("/post/new", methods=['GET', 'POST'])
@@ -23,9 +24,19 @@ def new_post():
 
 @posts.route("/post/<int:post_id>", methods=['GET', 'POST'])            #'int:' imposes that post_id must be int.
 def post(post_id):
+    form = CommentForm()
     post = Post.query.get_or_404(post_id)                               #get(id) is used to query the db through Primary key. 
                                                                         #get_or_404(id) to return 404 error instead of None in case of missing entry.
-    return render_template('post.html', title="post.title", post=post)
+    
+    comments = Comment.query.filter_by(post_id = post_id)
+        
+    if form.validate_on_submit():
+        comment = Comment(content=form.content.data, author=current_user, post_id=post_id)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been posted', 'success')
+        return redirect(url_for('posts.post', post_id=post.id))
+    return render_template('post.html', title="post.title",form = form, post=post, comments = comments)
 
 
 

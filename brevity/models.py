@@ -2,6 +2,7 @@ from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app 
 from brevity import db, login_manager
+from brevity.posts.forms import CommentForm
 from flask_login import UserMixin
 
 
@@ -21,7 +22,8 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)                    #By default SQLAlchemy guess the relationship to be one to many as posts returns a list of post.
-                                                                                    #  If you would want to have a one-to-one relationship you can pass uselist=False to relationship().                 
+                                                                                    #  If you would want to have a one-to-one relationship you can pass uselist=False to relationship().
+    commented = db.relationship('Comment', backref='author', lazy=True)                 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')                #user_id is the payload
@@ -47,7 +49,20 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship('Comment', backref='post', lazy=True)
                                                                                     
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
                                                                                     #author can be used in Post object and it returns a User object.
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    def __repr__(self):
+        return f"Comment('{self.content}', '{self.date_posted}')"
+    

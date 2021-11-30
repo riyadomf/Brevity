@@ -17,6 +17,54 @@
             <p class="article-content">{{ post.content }}</p>
         </div>
     </article>
+    {% if current_user.is_authenticated %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}                                    <!--adds csrf token-->
+            <fieldset class="form-group">
+                <div class="form-group">
+                    Comment as {{current_user.username}}
+                    {% if form.content.errors %}
+                        {{ form.content(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.content.errors %}
+                                <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.content(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info")}}
+            </div>
+        </form> 
+    </div>
+    {% endif %}
+
+    
+   
+    {% for comment in comments %}
+    <div class="container mt-1">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-11">
+                <div class="d-flex flex-column comment-section">
+                    <div class="bg-white p-2">
+                        <div class="d-flex flex-row user-info"><img class="rounded-circle" src="{{ url_for('static', filename = 'profile_pics/' + comment.author.image_file)}}" width="40">
+                            <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">{{comment.author.username}}</span><small class="text-muted">{{comment.date_posted.strftime('%d-%m-%Y')}}</small></div>
+                        </div>
+                        <div class="mt-2">
+                            <p class="comment-text">{{comment.content}}</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
     <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

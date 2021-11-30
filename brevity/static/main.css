@@ -1,3 +1,5 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
 body {
     background: #fafafa;
     color: #333333;
@@ -77,4 +79,36 @@ body {
   
   .account-heading {
     font-size: 2.5rem;
+  }
+
+  .date {
+    font-size: 11px
+  }
+
+.comment-text {
+    font-size: 12px
+  }
+
+.fs-12 {
+    font-size: 12px
+  }
+
+.shadow-none {
+    box-shadow: none
+  }
+
+.name {
+    color: #007bff
+  }
+
+.cursor:hover {
+    color: blue
+  }
+
+.cursor {
+    cursor: pointer
+  }
+
+.textarea {
+    resize: none
   }
