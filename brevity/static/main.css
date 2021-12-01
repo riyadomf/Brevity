@@ -11,7 +11,7 @@ body {
   }
   
   .bg-steel {
-    background-color: #5f788a;
+    background-color: #073e66;
   }
   
   .site-header .navbar-nav .nav-link {
@@ -102,7 +102,7 @@ body {
   }
 
 .cursor:hover {
-    color: blue
+    color: rgb(12, 190, 146)
   }
 
 .cursor {
@@ -112,3 +112,44 @@ body {
 .textarea {
     resize: none
   }
+.upvote {
+  color: #1a6ab9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.vote_count {
+  color: #1a6ab9;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.downvote {
+  color: #1a6ab9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.comment {
+  color: #1a6ab9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.comment_count {
+  color: #1a6ab9;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.unauthorised_upvote {
+  color: #1a6ab9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.unauthorised_downvote {
+  color: #1a6ab9;
+  font-size: 13px;
+  font-weight: 700;
+}

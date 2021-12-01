@@ -32,10 +32,11 @@ class User(db.Model, UserMixin):
         if not self.has_upvoted_post(post):
             upvote = Upvote(user_id=self.id, post_id=post.id)
             db.session.add(upvote)
-        current_user.remove_downvote(post)
-    
-    def remove_upvote(self, post):
-        if self.has_upvoted_post(post):
+            if self.has_downvoted_post(post):
+                Downvote.query.filter_by(
+                user_id=self.id,
+                post_id=post.id).delete()
+        else:
             Upvote.query.filter_by(
                 user_id=self.id,
                 post_id=post.id).delete()
@@ -45,14 +46,16 @@ class User(db.Model, UserMixin):
             Upvote.user_id == self.id,
             Upvote.post_id == post.id).count() > 0
 
+
     def downvote_post(self, post):
         if not self.has_downvoted_post(post):
             downvote = Downvote(user_id=self.id, post_id=post.id)
             db.session.add(downvote)
-        current_user.remove_upvote(post)
-    
-    def remove_downvote(self, post):
-        if self.has_downvoted_post(post):
+            if self.has_upvoted_post(post):
+                Upvote.query.filter_by(
+                user_id=self.id,
+                post_id=post.id).delete()
+        else:
             Downvote.query.filter_by(
                 user_id=self.id,
                 post_id=post.id).delete()
@@ -91,7 +94,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     upvotes = db.relationship('Upvote', backref='post', lazy='dynamic')
     downvotes = db.relationship('Downvote', backref='post', lazy='dynamic')
-    comments = db.relationship('Comment', backref='post', lazy=True)
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
                                                                                     
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"

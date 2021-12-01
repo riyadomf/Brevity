@@ -1,5 +1,5 @@
 from flask import (render_template, url_for, flash, redirect,
-                    request, abort, Blueprint)
+                    request, abort, Blueprint, jsonify)
 from flask_login import login_required, current_user
 from brevity import db
 from brevity.posts.forms import CommentForm, PostForm
@@ -27,19 +27,30 @@ def new_post():
 @login_required
 def vote_action(post_id, action):
     post = Post.query.filter_by(id=post_id).first_or_404()
+    
     if action == 'upvote':
         current_user.upvote_post(post)
         db.session.commit()
-    elif action == 'remove_upvote':
-        current_user.remove_upvote(post)
-        db.session.commit()
+        upvote_count = post.upvotes.count()
+        downvote_count = post.downvotes.count()
+        return jsonify({'result': 'success', 'upvote_count': upvote_count, 'downvote_count': downvote_count})
+    
     elif action == 'downvote':
         current_user.downvote_post(post)
         db.session.commit()
-    elif action == 'remove_downvote':
-        current_user.remove_downvote(post)
+        upvote_count = post.upvotes.count()
+        downvote_count = post.downvotes.count()
+        return jsonify({'result': 'success', 'upvote_count': upvote_count, 'downvote_count': downvote_count})
+
+    elif action =='unauthorized_upvote':
+        current_user.upvote_post(post)
         db.session.commit()
-    return redirect(request.referrer)
+        return redirect(request.referrer)
+
+    elif action == 'unauthorized_downvote':
+        current_user.downvote_post(post)
+        db.session.commit()
+        return redirect(request.referrer)
 
 
 @posts.route("/post/<int:post_id>", methods=['GET', 'POST'])            #'int:' imposes that post_id must be int.
