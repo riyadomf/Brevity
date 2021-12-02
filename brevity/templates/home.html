@@ -11,7 +11,8 @@
                 <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content[:200] }}<span>&#8230;</span></p>                    <!-- limit the post display for long posts-->
                 
-                <!--like, comment div-->
+                <!--upvote, downvote div-->
+                <div>
                 {% if current_user.is_authenticated %}
                     <div class="d-flex flex-row fs-12" id="vote{{post.id}}">
                         {% if not current_user.has_upvoted_post(post) %}
@@ -44,7 +45,8 @@
                         <div class="like comment_count"><span class="ml-0">({{post.comments.count()}})</span></div>  
                     </div>
                 {% endif %}
-                
+                </div>
+                <!-- end upvote, downvote div -->
                 
             </div>
                                                                                               <!-- ellipsis: for text overflow-->
