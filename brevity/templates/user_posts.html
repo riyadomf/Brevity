@@ -10,6 +10,13 @@
                     <small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
                 </div>
                 <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+
+                <div class="d-flex ps-relative">
+                  {% for tag in post.tags %}
+                          <a href="#" class="post-tag" >{{tag.tag}}</a> 
+                  {% endfor %}
+                </div>
+
                 <p class="article-content">{{ post.content[:200] }}<span>&#8230;</span></p>                 <!-- limit the post display for long posts-->
                                                                                                             <!-- ellipsis: for text overflow-->
           

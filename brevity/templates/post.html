@@ -14,6 +14,13 @@
                 {% endif %}
             </div>
             <h2 class="article-title">{{ post.title }}</h2>
+
+            <div class="d-flex ps-relative">
+                {% for tag in post.tags %}
+                        <a href="#" class="post-tag" >{{tag.tag}}</a> 
+                {% endfor %}
+            </div>
+            
             <p class="article-content">{{ post.content }}</p>
 
             <!--upvote, downvote div-->

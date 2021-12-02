@@ -3,7 +3,7 @@ from flask import (render_template, url_for, flash, redirect,
 from flask_login import login_required, current_user
 from brevity import db
 from brevity.posts.forms import CommentForm, PostForm
-from brevity.models import Comment, Post
+from brevity.models import Comment, Post, Tag
 
 posts = Blueprint('posts', '__name__')
 
@@ -14,9 +14,18 @@ posts = Blueprint('posts', '__name__')
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        post = Post(title=form.title.data, content=form.content.data, author=current_user, tag=form.tag.data)
         db.session.add(post)
+        tags = form.tag.data.split(",")
+
+        for tag_value in tags:
+            tag = Tag(tag=tag_value, post=post)
+            print(tag)
+            db.session.add(tag)
+        
         db.session.commit()
+
+        
         flash('Your post has been created', 'success')
         return redirect(url_for('main.home'))
     return render_template('create_post.html', title = 'New Post', form = form, legend='New Post')

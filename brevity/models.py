@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import unique
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from sqlalchemy.orm import backref 
@@ -92,6 +93,8 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    tag = db.Column(db.String(200))  ### delete later
+    tags = db.relationship('Tag', backref='post', cascade="all, delete", lazy='dynamic')
     upvotes = db.relationship('Upvote', backref='post', lazy='dynamic')
     downvotes = db.relationship('Downvote', backref='post', lazy='dynamic')
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
@@ -100,6 +103,9 @@ class Post(db.Model):
         return f"Post('{self.title}', '{self.date_posted}')"
                                                                                     #author can be used in Post object and it returns a User object.
 
+class Tag(db.Model):
+    tag = db.Column(db.String(50), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
 
 class Upvote(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
