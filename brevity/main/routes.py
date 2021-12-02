@@ -13,6 +13,8 @@ def home(type=0):
         posts =  Post.query.paginate(page=page, per_page=5)
     elif type==1:
         posts =  Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    
+
     return render_template('home.html', posts = posts)
                                                     #paginate() returns a pagination object which has necessary attributes and methods.
                                                     #dir(object): returns all the attributes and methods of that object

@@ -179,3 +179,22 @@ body {
   font-size: 13px;
   font-weight: 700;
 }
+
+.post-tag{
+  display: inline-block;
+  padding: 0.4em 0.5em;
+  margin: 2px 2px 2px 2px;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  text-align: center;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 9999px;
+  color: #0d0e0f;
+  background-color: #bec2c7;
+  border-color: #51708f;
+  font-weight: 500;
+
+}
