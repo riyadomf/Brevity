@@ -19,9 +19,9 @@ def new_post():
         tags = form.tag.data.split(",")
 
         for tag_value in tags:
-            tag = Tag(tag=tag_value, post=post)
-            print(tag)
-            db.session.add(tag)
+            if(tag_value!=''):
+                tag = Tag(tag=tag_value, post=post)
+                db.session.add(tag)
         
         db.session.commit()
 
