@@ -31,16 +31,12 @@ def vote_action(post_id, action):
     if action == 'upvote':
         current_user.upvote_post(post)
         db.session.commit()
-        upvote_count = post.upvotes.count()
-        downvote_count = post.downvotes.count()
-        return jsonify({'result': 'success', 'upvote_count': upvote_count, 'downvote_count': downvote_count})
-    
+        return render_template('vote_section.html', post=post)
+
     elif action == 'downvote':
         current_user.downvote_post(post)
         db.session.commit()
-        upvote_count = post.upvotes.count()
-        downvote_count = post.downvotes.count()
-        return jsonify({'result': 'success', 'upvote_count': upvote_count, 'downvote_count': downvote_count})
+        return render_template('vote_section.html', post=post)
 
     elif action =='unauthorized_upvote':
         current_user.upvote_post(post)

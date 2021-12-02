@@ -13,23 +13,32 @@
                 
                 <!--like, comment div-->
                 {% if current_user.is_authenticated %}
-                    <div class="d-flex flex-row fs-12">
-                        <div class="like cursor upvote" post_id="{{post.id}}"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Upvote</span></div>
-                        <div class="like vote_count" ><span id="upvote{{post.id}}" class="ml-1 mr-4">({{post.upvotes.count()}})</span></div>
-                        
-                        <div class="like  cursor downvote" post_id="{{post.id}}"><i class="fa fa-thumbs-o-down"></i><span class="ml-1">Downvote</span></div>
-                        <div class="like vote_count"><span id="downvote{{post.id}}" class="ml-1 mr-4">({{post.downvotes.count()}})</span></div>
-                        
+                    <div class="d-flex flex-row fs-12" id="vote{{post.id}}">
+                        {% if not current_user.has_upvoted_post(post) %}
+                            <div class="like cursor votestyle vote" post_id="{{post.id}}" action="upvote"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Upvote</span></div>
+                            <div class="like vote_count" ><span class="ml-1 mr-4">({{post.upvotes.count()}})</span></div>
+                        {% else %}
+                            <div class="like cursor upvotedstyle vote" post_id="{{post.id}}" action="upvote"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Upvoted</span></div>
+                            <div class="like upvoted_count" ><span class="ml-1 mr-4">({{post.upvotes.count()}})</span></div>
+                        {% endif %}
+
+                        {% if not current_user.has_downvoted_post(post) %}
+                            <div class="like downvotecursor votestyle vote" post_id="{{post.id}}" action="downvote"><i class="fa fa-thumbs-o-down"></i><span class="ml-1">Downvote</span></div>
+                            <div class="like vote_count"><span class="ml-1 mr-4">({{post.downvotes.count()}})</span></div>
+                        {% else %}
+                            <div class="like downvotecursor downvotedstyle vote" post_id="{{post.id}}" action="downvote"><i class="fa fa-thumbs-o-down"></i><span class="ml-1">Downvoted</span></div>
+                            <div class="like downvoted_count"><span class="ml-1 mr-4">({{post.downvotes.count()}})</span></div>
+                        {% endif %}
                         <div class="like cursor comment"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class="mr-1 like cursor comment" href="{{ url_for('posts.post', post_id=post.id) }}">Comment</a></span></div>
                         <div class="like comment_count"><span class="ml-0">({{post.comments.count()}})</span></div>
                     </div>
                 {% else %}
                     <div class="d-flex flex-row fs-12">
                         <div class="like cursor unauthorised_upvote"><i class="fa fa-thumbs-o-up"></i><span class="ml-1"><a class="like cursor unauthorised_upvote" href="{{ url_for('posts.vote_action', post_id=post.id, action='unauthorized_upvote')}}">Upvote</a></span></div>
-                        <div class="like vote_count" ><span id="upvote{{post.id}}" class="ml-1 mr-4">({{post.upvotes.count()}})</span></div>
+                        <div class="like vote_count" ><span class="ml-1 mr-4">({{post.upvotes.count()}})</span></div>
                         
-                        <div class="like cursor unauthorised_downvote"><i class="fa fa-thumbs-o-down"></i><span class="ml-1"><a class="like cursor unauthorised_downvote" href="{{ url_for('posts.vote_action', post_id=post.id, action='unauthorized_downvote')}}">Downvote</a></span></div>
-                        <div class="like vote_count"><span id="downvote{{post.id}}" class="ml-1 mr-4">({{post.downvotes.count()}})</span></div>
+                        <div class="like downvotecursor unauthorised_downvote"><i class="fa fa-thumbs-o-down"></i><span class="ml-1"><a class="like downvotecursor unauthorised_downvote" href="{{ url_for('posts.vote_action', post_id=post.id, action='unauthorized_downvote')}}">Downvote</a></span></div>
+                        <div class="like vote_count"><span class="ml-1 mr-4">({{post.downvotes.count()}})</span></div>
 
                         <div class="like cursor comment"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class="mr-1 like cursor comment" href="{{ url_for('posts.post', post_id=post.id) }}">Comment</a></span></div>
                         <div class="like comment_count"><span class="ml-0">({{post.comments.count()}})</span></div>  

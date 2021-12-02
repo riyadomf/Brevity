@@ -109,11 +109,30 @@ body {
     cursor: pointer
   }
 
+.downvotecursor:hover {
+    color: rgb(204, 11, 11);
+}
+.downvotecursor {
+  cursor: pointer
+}
+
 .textarea {
     resize: none
   }
-.upvote {
+.votestyle {
   color: #1a6ab9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.upvotedstyle {
+  color: rgb(12, 190, 146);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.downvotedstyle {
+  color: rgb(204, 11, 11);
   font-size: 13px;
   font-weight: 700;
 }
@@ -124,11 +143,18 @@ body {
   font-weight: 600;
 }
 
-.downvote {
-  color: #1a6ab9;
+.upvoted_count {
+  color: rgb(12, 190, 146);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
 }
+
+.downvoted_count {
+  color: rgb(204, 11, 11);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 
 .comment {
   color: #1a6ab9;
