@@ -93,18 +93,19 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    tag = db.Column(db.String(200))  ### delete later
+
     tags = db.relationship('Tag', backref='post', cascade="all, delete", lazy='dynamic')
     upvotes = db.relationship('Upvote', backref='post', lazy='dynamic')
     downvotes = db.relationship('Downvote', backref='post', lazy='dynamic')
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
-                                                                                    
+    resources = db.relationship('ResourceFile', backref='post', lazy='dynamic')       
+
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
                                                                                     #author can be used in Post object and it returns a User object.
 
 class Tag(db.Model):
-    tag = db.Column(db.String(50), primary_key=True)
+    tag = db.Column(db.String(50), nullable=False, unique=True, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
 
 class Upvote(db.Model):
@@ -118,7 +119,7 @@ class Downvote(db.Model):
 
 
 class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, nullable=False, primary_key = True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -126,4 +127,9 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f"Comment('{self.content}', '{self.date_posted}')"
+    
+class ResourceFile(db.Model):
+    id = db.Column(db.Integer, nullable=False, primary_key = True)
+    filename = db.Column(db.String(50), nullable = False, unique=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     

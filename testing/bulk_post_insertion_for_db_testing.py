@@ -37,3 +37,12 @@ def insert_bulk_post(posts):
 
 posts = read_file(os.path.join('testing', "bulk_post_insertion_for_db_testing.json"))
 insert_bulk_post(posts)
+
+
+
+# from brevity import create_app
+# from brevity import db
+# from brevity.models import current_app, User, Post
+# app = create_app()
+# app.app_context().push()
+# print (app)

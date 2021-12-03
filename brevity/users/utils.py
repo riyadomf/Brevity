@@ -4,11 +4,13 @@ from flask import url_for, current_app
 from flask_mail import Message
 from brevity import mail
 from flask_login import current_user
+from werkzeug.utils import secure_filename
 
 
 def save_picture(form_picture):
+    
     random_hex = secrets.token_hex(8)       # To randomize the name of the uploaded image so that the name doesn't collide with the already uploaded ones 
-    _, f_ext = os.path.splitext(form_picture.filename)   # Splits the filename and extension in 2 part.
+    _, f_ext = os.path.splitext(secure_filename(form_picture.filename))   # Splits the filename and extension in 2 part.
                                             # We don't need the filename. That's why we represent it with '_'.
                                             #     To let the editor know that it's unused.
     picture_fn = random_hex + f_ext

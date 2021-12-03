@@ -1,9 +1,11 @@
 from flask import (render_template, url_for, flash, redirect,
                     request, abort, Blueprint, jsonify)
 from flask_login import login_required, current_user
+from werkzeug.utils import secure_filename
 from brevity import db
 from brevity.posts.forms import CommentForm, PostForm
-from brevity.models import Comment, Post, Tag
+from brevity.models import Comment, Post, ResourceFile, Tag
+from brevity.posts.utils import save_file
 
 posts = Blueprint('posts', '__name__')
 
@@ -14,10 +16,17 @@ posts = Blueprint('posts', '__name__')
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user, tag=form.tag.data)
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
         db.session.add(post)
-        tags = form.tag.data.split(",")
 
+        files_filenames = []
+        for file in form.fileResource.data:
+            files_filename = save_file(file)
+            files_filenames.append(files_filename)
+            resourceFile = ResourceFile(filename=files_filename, post_id=post.id, post=post)
+            db.session.add(resourceFile)
+        
+        tags = form.tag.data.split(",")
         for tag_value in tags:
             if(tag_value!=''):
                 tag = Tag(tag=tag_value, post=post)

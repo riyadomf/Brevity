@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <form method="POST" action="">
+        <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}                                    <!--adds csrf token-->
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">{{ legend }}</legend>
@@ -44,6 +44,19 @@
                         {{ form.tag(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
+
+                <div class="form-group">
+                    {{ form.fileResource.label() }}
+                    {{ form.fileResource(class="form-control-file") }}
+                    {% if form.fileResource.errors %}
+                        {% for error in form.fileResource.errors %}
+                            <span class="text-danger"> {{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info")}}
