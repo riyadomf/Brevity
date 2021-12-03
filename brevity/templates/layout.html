@@ -32,9 +32,20 @@
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
                         <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+                        
                     </div>
+                    
+                    <form method="POST" action="{{url_for('main.search')}}" class="d-flex">
+                        {{form.hidden_tag()}}
+                        <input class="form-control me-2" type="search" placeholder="[tag] search within a tag" aria-label="Search", name="searched">
+                        
+                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    </form>
+                    
+                    
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
+                        
                         {% if current_user.is_authenticated %}
                             <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
                             <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>

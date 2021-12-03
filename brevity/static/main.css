@@ -198,3 +198,9 @@ body {
   font-weight: 500;
 
 }
+
+
+input[type="search"]::placeholder {  
+                  
+  font-size: 13px;
+}
