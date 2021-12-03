@@ -5,8 +5,8 @@ from brevity.models import User, Post
 from brevity.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                     RequestResetForm, ResetPasswordForm)
 from brevity.users.utils import save_picture, send_reset_email                     
-                
-
+from brevity.main.forms import SearchForm
+from brevity import main
 users = Blueprint('users', '__name__')
 
 
@@ -73,13 +73,14 @@ def account():
 
 @users.route("/user/<string:username>")
 def user_posts(username):
+    form=SearchForm()
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     posts = (Post.query.filter_by(author = user)
         .order_by(Post.date_posted.desc())
         .paginate(page = page, per_page = 5)
         )
-    return render_template('user_posts.html', posts=posts, user=user)
+    return render_template('user_posts.html', posts=posts, form=form, user=user)
 
 
 
