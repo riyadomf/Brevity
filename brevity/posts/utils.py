@@ -16,7 +16,9 @@ def save_file(form_file):
     file_fn = random_hex + f_ext
     file_path = os.path.join(current_app.root_path, 'static', 'resource_files', file_fn )
     
+    form_file.stream.seek(0)
     form_file.save(file_path)
+    form_file.close()
 
     return file_fn
 
