@@ -126,3 +126,17 @@ def get_resource(filename):
         return send_from_directory(directory=file_path, path=filename, as_attachment=True)
     except FileNotFoundError:
         abort(404)
+
+@posts.route("/post/comment/<int:comment_id>/delete", methods=['POST'])
+@login_required
+def delete_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    print(comment.author.username)
+    
+    if comment.author != current_user:
+        abort(403)
+    PostId = comment.post.id
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Your comment has been deleted!', 'success')
+    return redirect(url_for('posts.post', post_id=PostId))

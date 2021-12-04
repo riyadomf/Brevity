@@ -95,10 +95,10 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     tags = db.relationship('Tag', backref='post', cascade="all, delete", lazy='dynamic')
-    upvotes = db.relationship('Upvote', backref='post', lazy='dynamic')
-    downvotes = db.relationship('Downvote', backref='post', lazy='dynamic')
-    comments = db.relationship('Comment', backref='post', lazy='dynamic')
-    resources = db.relationship('ResourceFile', backref='post', lazy='dynamic')       
+    upvotes = db.relationship('Upvote', backref='post', cascade="all, delete", lazy='dynamic')
+    downvotes = db.relationship('Downvote', backref='post',cascade="all, delete", lazy='dynamic')
+    comments = db.relationship('Comment', backref='post',cascade="all, delete", lazy='dynamic')
+    resources = db.relationship('ResourceFile', backref='post',cascade="all, delete", lazy='dynamic')       
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
