@@ -89,6 +89,7 @@
     {% endif %}
 
     
+
    
     {% for comment in comments %}
     <div class="container mt-1">
@@ -100,7 +101,7 @@
                             <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">{{comment.author.username}}</span><small class="text-muted">{{comment.date_posted.strftime('%d-%m-%Y')}}</small></div>
                         </div>
                         <div class="mt-2">
-                            <p class="comment-text">{{comment.content}}</p>
+                            <p class="comment_data">{{comment.content}}</p>
                         </div>
                     </div>
                     
