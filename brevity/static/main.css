@@ -245,3 +245,18 @@ input[type="search"]::placeholder {
   color: red;
   transform: translateX(650%);
 }
+
+.deletePost{
+  color: red;
+  margin-left: 5px;
+  font-weight: 700;
+  font-size: 13px;
+  margin-top: 3px;
+}
+.UpdatePost{
+  color: green;
+  margin-left: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  margin-top: 3px;
+}
