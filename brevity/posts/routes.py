@@ -1,8 +1,10 @@
-from flask import (render_template, url_for, flash, redirect,
-                    request, abort, Blueprint, jsonify)
+import os
+from flask import (render_template, url_for, flash, redirect, current_app, 
+                    request, abort, Blueprint, send_file, send_from_directory, safe_join, abort)
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from brevity import db
+from brevity.main.forms import SearchForm
 from brevity.posts.forms import CommentForm, PostForm
 from brevity.models import Comment, Post, ResourceFile, Tag
 from brevity.posts.utils import save_file
@@ -115,3 +117,12 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main.home'))
+
+@posts.route("/post/get_resource/<filename>")
+def get_resource(filename):
+    form = SearchForm()
+    try:
+        file_path = os.path.join(current_app.root_path, 'static', 'resource_files')
+        return send_from_directory(directory=file_path, path=filename, as_attachment=True)
+    except FileNotFoundError:
+        abort(404)

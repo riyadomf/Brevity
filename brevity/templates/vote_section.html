@@ -14,6 +14,15 @@
         <div class="like downvotecursor downvotedstyle vote" post_id="{{post.id}}" action="downvote"><i class="fa fa-thumbs-o-down"></i><span class="ml-1">Downvoted</span></div>
         <div class="like downvoted_count"><span class="ml-1 mr-4">({{post.downvotes.count()}})</span></div>
     {% endif %}
-    <div class="like cursor comment"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class="mr-1 like cursor comment" href="{{ url_for('posts.post', post_id=post.id) }}">Comment</a></span></div>
-    <div class="like comment_count"><span class="ml-0">({{post.comments.count()}})</span></div>
+        <div class="like cursor comment"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class="mr-1 like cursor comment" href="{{ url_for('posts.post', post_id=post.id) }}">Comment</a></span></div>
+        <div class="like comment_count"><span class="ml-0">({{post.comments.count()}})</span></div>
+    
+    <!--  file button -->
+    <button type="button" class="btn btn-sm mb-4 resource" data-toggle="modal" data-target="#resourceModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16" data-darkreader-inline-fill="" style="--darkreader-inline-fill:currentColor;">
+<path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z"></path>
+</svg>Resource</button>
+
+    <!--  file button end-->
+
 </div>

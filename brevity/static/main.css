@@ -214,3 +214,27 @@ input[type="search"]::placeholder {
   width: 30%;
   margin-left: 47px;
 }
+
+.resource {
+  /* margin-left: 50px; */
+  width: 12%;
+  padding: 4px 4px;
+  font-size: 13px;
+  position: absolute;
+  /* -ms-transform: translateY(-50%);
+  transform: translateY(-50%); */
+  /* transform: translateX(205%); */
+  /* transform: translateY(-10%);
+  transform: translateX(205%); */
+  transform: translate(385%, -17%);
+  /* text-align: center; */
+  /* padding: 3px 5px; */
+  background-color: #ffffff;
+  text-align: center;
+  /* border: none; */
+  border-radius: 6px;
+  font-weight: 680;
+  margin-bottom: 5px;
+  border: 3px;
+  color: #215181;
+}

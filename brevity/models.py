@@ -105,7 +105,7 @@ class Post(db.Model):
                                                                                     #author can be used in Post object and it returns a User object.
 
 class Tag(db.Model):
-    tag = db.Column(db.String(50), nullable=False, unique=True, primary_key=True)
+    tag = db.Column(db.String(50), nullable=False, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
 
 class Upvote(db.Model):
