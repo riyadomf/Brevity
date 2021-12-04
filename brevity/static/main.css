@@ -206,4 +206,11 @@ input[type="search"]::placeholder {
 }
 .dropdown-toggle{
   background-color: #073e66;
+  width: 40%;
+}
+
+.comment_data{
+  white-space: pre-line;
+  width: 30%;
+  margin-left: 47px;
 }
