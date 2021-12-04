@@ -74,15 +74,7 @@
                 {% endwith %}
                 {% block content %}{% endblock %}
             </div>
-            <div class="col-md-4">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Sort By
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{{ url_for('main.home', type=1) }}">Date</a>
-                    <a class="dropdown-item" href="{{ url_for('main.home', type=2) }}">Popularity</a>
-                </div>
-            </div>
+
         </div>
     </main>
 
