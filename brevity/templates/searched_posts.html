@@ -5,8 +5,8 @@
             Sort By
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="{{ url_for('main.search', type=1) }}">Date</a>
-            <a class="dropdown-item" href="{{ url_for('main.search', type=2) }}">Popularity</a>
+            <a class="dropdown-item" href="{{ url_for('main.search', type=1,form_val=form_val) }}">Date</a>
+            <a class="dropdown-item" href="{{ url_for('main.search', type=2,form_val=form_val) }}">Popularity</a>
         </div>
     </div>
     {% for post in posts.items %}
