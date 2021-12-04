@@ -7,7 +7,7 @@ from brevity import db
 from brevity.main.forms import SearchForm
 from brevity.posts.forms import CommentForm, PostForm
 from brevity.models import Comment, Post, ResourceFile, Tag
-from brevity.posts.utils import save_file
+from brevity.posts.utils import delete_file, save_file
 
 posts = Blueprint('posts', '__name__')
 
@@ -23,10 +23,11 @@ def new_post():
 
         files_filenames = []
         for file in form.fileResource.data:
-            files_filename = save_file(file)
-            files_filenames.append(files_filename)
-            resourceFile = ResourceFile(filename=files_filename, post_id=post.id, post=post)
-            db.session.add(resourceFile)
+            if file:
+                files_filename = save_file(file)
+                files_filenames.append(files_filename)
+                resourceFile = ResourceFile(filename=files_filename, post_id=post.id, post=post)
+                db.session.add(resourceFile)
         
         tags = form.tag.data.split(",")
         for tag_value in tags:
@@ -35,12 +36,44 @@ def new_post():
                 db.session.add(tag)
         
         db.session.commit()
-
-        
+       
         flash('Your post has been created', 'success')
         return redirect(url_for('main.home'))
     return render_template('create_post.html', title = 'New Post', form = form, legend='New Post')
 
+
+
+@posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+
+        files_filenames = []
+        for file in form.fileResource.data:
+            if file:
+                files_filename = save_file(file)
+                files_filenames.append(files_filename)
+                resourceFile = ResourceFile(filename=files_filename, post_id=post.id, post=post)
+                db.session.add(resourceFile)
+
+        db.session.commit()
+
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('posts.post', post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    
+    print(post.resources.count())
+    return render_template('create_post.html', title = 'Update Post', post = post,
+                            form = form, legend='Update Post')
 
 
 @posts.route('/post/<int:post_id>/vote/<action>', methods=['GET', 'POST'])
@@ -87,24 +120,6 @@ def post(post_id):
 
 
 
-@posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
-@login_required
-def update_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
-        abort(403)
-    form = PostForm()
-    if form.validate_on_submit():
-        post.title = form.title.data
-        post.content = form.content.data
-        db.session.commit()
-        flash('Your post has been updated!', 'success')
-        return redirect(url_for('posts.post', post_id=post.id))
-    elif request.method == 'GET':
-        form.title.data = post.title
-        form.content.data = post.content
-    return render_template('create_post.html', title = 'Update Post',
-                            form = form, legend='Update Post')
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])
@@ -127,11 +142,27 @@ def get_resource(filename):
     except FileNotFoundError:
         abort(404)
 
+
+@posts.route("/post/delete_resource/<int:resource_id>", methods=['GET', 'POST'])
+@login_required
+def delete_resource(resource_id):
+    resource = ResourceFile.query.get_or_404(resource_id)
+    post = resource.post
+
+    delete_file(resource.filename)
+
+    db.session.delete(resource)
+    db.session.commit()
+    flash('Your file has been deleted!', 'success')
+    return redirect(url_for('posts.update_post', post_id=post.id))
+
+
+
+
 @posts.route("/post/comment/<int:comment_id>/delete", methods=['POST'])
 @login_required
 def delete_comment(comment_id):
     comment = Comment.query.get_or_404(comment_id)
-    print(comment.author.username)
     
     if comment.author != current_user:
         abort(403)

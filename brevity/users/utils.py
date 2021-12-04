@@ -18,6 +18,9 @@ def save_picture(form_picture):
     
     output_size = (125,125)
     i = Image.open(form_picture)            # PIL package
+
+    if i.mode in ("RGBA", "P"): i = i.convert("RGB")
+
     i.thumbnail(output_size)
     i.save(picture_path)
                                             # Delete previous picture while uploading new one.

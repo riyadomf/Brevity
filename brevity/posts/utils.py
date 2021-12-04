@@ -21,6 +21,12 @@ def save_file(form_file):
     return file_fn
 
 
+def delete_file(filename):
+    file_to_delete = os.path.join(current_app.root_path,'static','resource_files', filename)   
+    if os.path.exists(file_to_delete):
+        os.remove(file_to_delete)
+    return
+
 
 def FileSizeLimit(max_size_in_mb):
         max_bytes = max_size_in_mb*1024*1024

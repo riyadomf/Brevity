@@ -72,7 +72,6 @@ def search(type=0):
     if type=="1":
         searched_val += ']'
         searched_val = '[' + searched_val
-    print(searched_val)
     return render_template('searched_posts.html', posts = search_result(searched_val,page),form =form,form_val=searched_val)
     
     
