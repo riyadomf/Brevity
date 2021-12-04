@@ -61,7 +61,7 @@ def search(type=0):
         searched_val = form.searched.data
         if searched_val==None:
             return render_template('searched_post.html', posts = posts,form_val=form.searched.data)
-        return render_template('searched_posts.html', posts = search_result(searched_val,page),form =form,form_val=form.searched.data)
+        return render_template('searched_posts.html', posts = search_result(searched_val,page,type),form =form,form_val=form.searched.data)
 
     searched_val = request.args.get('form_val')
     if searched_val==None:
@@ -71,7 +71,5 @@ def search(type=0):
     if type=="1":
         searched_val += ']'
         searched_val = '[' + searched_val
-    return render_template('searched_posts.html', posts = search_result(searched_val,page),form =form,form_val=searched_val)
-    
-    
-
+    print(searched_val)
+    return render_template('searched_posts.html', posts = search_result(searched_val,page,type),form =form,form_val=searched_val)
