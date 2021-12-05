@@ -4,6 +4,8 @@ from brevity.models import Post, Tag, Upvote
 from brevity import db
 from sqlalchemy import func
 
+### search type tag(type=0)
+### otherwise(type=1)
 def search_result(searched_val,page,type):
     search = "%{}%".format(searched_val)
 

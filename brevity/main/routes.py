@@ -43,17 +43,22 @@ def home(type=0):
 def about():
     return render_template('about.html', title = 'About')
 
+### sort by date(type_sort=1)
+### sort by popularity(type_sort=2)
+### otherwise(type_sort=0)
+### search type tag(type=1)
+### search type else(type=0)
 
 @main.route('/search',methods=['GET', 'POST'])
-@main.route('/search/<int:type>',methods=['GET', 'POST'])
-def search(type=0):
+@main.route('/search/<int:type_sort>',methods=['GET', 'POST'])
+def search(type_sort=0):
     page = request.args.get('page', 1, type=int) 
 
-    if type==0:
+    if type_sort==0:
         posts =  Post.query.paginate(page=page, per_page=5)
-    elif type==1:
+    elif type_sort==1:
         posts =  Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-    elif type==2:
+    elif type_sort==2:
         posts = db.session.query(Post).join(Upvote).filter(Post.id==Upvote.post_id).group_by(Post.id).order_by(func.count(Post.id).desc()).paginate(page=page, per_page=5)
 
     form=SearchForm()
@@ -61,15 +66,16 @@ def search(type=0):
         searched_val = form.searched.data
         if searched_val==None:
             return render_template('searched_post.html', posts = posts,form_val=form.searched.data)
-        return render_template('searched_posts.html', posts = search_result(searched_val,page,type),form =form,form_val=form.searched.data)
+        return render_template('searched_posts.html', posts = search_result(searched_val,page,0),form =form,form_val=form.searched.data)
 
     searched_val = request.args.get('form_val')
     if searched_val==None:
         return render_template('searched_posts.html', posts = posts,form_val=searched_val)
-
+   
     type =  request.args.get('type')
+
     if type=="1":
         searched_val += ']'
         searched_val = '[' + searched_val
-    print(searched_val)
-    return render_template('searched_posts.html', posts = search_result(searched_val,page,type),form =form,form_val=searched_val)
+
+    return render_template('searched_posts.html', posts = search_result(searched_val,page,type_sort),form =form,form_val=searched_val)

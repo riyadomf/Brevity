@@ -209,6 +209,7 @@ input[type="search"]::placeholder {
   width: 70%;
   margin-left: -12px;
   margin-top: -20px;
+  margin-bottom: 10px;
 }
 
 .comment_data{
