@@ -1,8 +1,7 @@
 import os
 from flask import (render_template, url_for, flash, redirect, current_app, 
-                    request, abort, Blueprint, send_file, send_from_directory, safe_join, abort)
+                    request, abort, Blueprint, send_from_directory, abort)
 from flask_login import login_required, current_user
-from werkzeug.utils import secure_filename
 from brevity import db
 from brevity.main.forms import SearchForm
 from brevity.posts.forms import CommentForm, PostForm
@@ -71,7 +70,6 @@ def update_post(post_id):
         form.title.data = post.title
         form.content.data = post.content
     
-    print(post.resources.count())
     return render_template('create_post.html', title = 'Update Post', post = post,
                             form = form, legend='Update Post')
 
