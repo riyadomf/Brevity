@@ -6,7 +6,6 @@ from brevity.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                     RequestResetForm, ResetPasswordForm)
 from brevity.users.utils import save_picture, send_reset_email                     
 from brevity.main.forms import SearchForm
-from brevity import main
 users = Blueprint('users', '__name__')
 
 

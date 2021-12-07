@@ -1,16 +1,8 @@
-from operator import pos
 from flask import render_template, request, Blueprint
-from flask.helpers import url_for
-from flask_sqlalchemy import Pagination
-from sqlalchemy.sql.expression import desc
-from flask_wtf import form
-from werkzeug.utils import redirect
 from brevity.main.utils import search_result
-from brevity.models import Post, Tag, Upvote
+from brevity.models import Post, Upvote
 from brevity.main.forms import SearchForm
-from brevity.posts.routes import post
 from brevity import db
-from sqlalchemy import or_
 from sqlalchemy import func
 
 

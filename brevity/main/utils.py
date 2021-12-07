@@ -1,5 +1,3 @@
-
-
 from brevity.models import Post, Tag, Upvote
 from brevity import db
 from sqlalchemy import func

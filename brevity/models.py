@@ -1,11 +1,8 @@
 from datetime import datetime
-from enum import unique
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
-from sqlalchemy.orm import backref 
 from brevity import db, login_manager
-from brevity.posts.forms import CommentForm
-from flask_login import UserMixin, current_user
+from flask_login import UserMixin
 
 
                                                                                     #we need to provide a user_loader callback. This callback is used to 
