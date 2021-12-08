@@ -66,3 +66,12 @@ class MultiFileAllowed(object):
                             extensions=", ".join(self.upload_set)
                         )
                     )
+
+def getTagData(post):
+    tagData = ''
+    for tag in post.tags:
+        tagData += tag.tag
+        tagData += ','
+    sz = len(tagData)
+    tagData = tagData[:sz-1]
+    return tagData

@@ -6,7 +6,7 @@ from brevity import db
 from brevity.main.forms import SearchForm
 from brevity.posts.forms import CommentForm, PostForm
 from brevity.models import Comment, Post, ResourceFile, Tag
-from brevity.posts.utils import delete_file, save_file
+from brevity.posts.utils import delete_file, save_file, getTagData
 
 posts = Blueprint('posts', '__name__')
 
@@ -27,7 +27,6 @@ def new_post():
                 files_filenames.append(files_filename)
                 resourceFile = ResourceFile(filename=files_filename, post_id=post.id, post=post)
                 db.session.add(resourceFile)
-        
         tags = form.tag.data.split(",")
         for tag_value in tags:
             if(tag_value!=''):
@@ -54,6 +53,20 @@ def update_post(post_id):
         post.title = form.title.data
         post.content = form.content.data
 
+        #delete previous tag from database
+        for tag in post.tags:
+            db.session.delete(tag)
+
+        tags = form.tag.data.split(",")
+        
+        # add updated tags to database
+        for tag_value in tags:
+            if(tag_value!=''):
+                print('ekhane')
+                print(tag_value)
+                tag = Tag(tag=tag_value, post=post)
+                db.session.add(tag)
+
         files_filenames = []
         for file in form.fileResource.data:
             if file:
@@ -69,6 +82,7 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
+        form.tag.data = getTagData(post)
     
     return render_template('create_post.html', title = 'Update Post', post = post,
                             form = form, legend='Update Post')
