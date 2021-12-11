@@ -10,7 +10,9 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, config
 from flask_mail import Mail
 from brevity.config import Config
+import jinja_partials
 # from flask_migrate import Migrate
+
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -46,6 +48,8 @@ def create_app(config_class=Config):
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(errors)
+
+    jinja_partials.register_extensions(app)
 
     return app
 

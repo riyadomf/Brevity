@@ -11467,5 +11467,30 @@ a.article-title:hover {
   
 }
 
+.htmx-settling img {
+  opacity: 0;
+}
+
+.fade-me-out.htmx-swapping {
+  opacity: 0;
+  transition: opacity .25s ease-out;
+}
+
+img.htmx-indicator {
+    transition: opacity 300ms ease-in;
+}
+
+.fade-me-out.htmx-swapping {
+  opacity: 0;
+  transition: opacity .25s ease-out;
+}
 
 
+.fade-me-in.htmx-settling {
+  opacity: 0;
+}
+
+.fade-me-in {
+  opacity: 1;
+  transition: opacity .25s ease-out;
+}

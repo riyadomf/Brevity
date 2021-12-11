@@ -1,9 +1,11 @@
+from re import template
 from flask import render_template, request, Blueprint
 from brevity.main.utils import search_result
 from brevity.models import Post, Upvote
 from brevity.main.forms import SearchForm
 from brevity import db
 from sqlalchemy import func
+import time
 
 
 main = Blueprint('main', '__name__')
@@ -30,6 +32,19 @@ def home(type=0):
     return render_template('home.html', posts = posts)
                                                     #paginate() returns a pagination object which has necessary attributes and methods.
                                                     #dir(object): returns all the attributes and methods of that object
+
+
+
+
+@main.route("/feed/more_posts/<int:page>")
+def more_posts(page: int):
+    posts = Post.query.paginate( page=page, per_page=5)
+    time.sleep(.3)                                        #sleep to prove infinite scrolling
+    return render_template("posts_loop_partial.html", posts=posts, page=page)
+
+
+
+
 
 @main.route("/about")
 def about():
@@ -71,3 +86,5 @@ def search(type_sort=0):
         searched_val = '[' + searched_val
 
     return render_template('searched_posts.html', posts = search_result(searched_val,page,type_sort),form =form,form_val=searched_val)
+
+
