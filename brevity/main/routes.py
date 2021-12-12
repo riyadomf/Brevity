@@ -64,7 +64,6 @@ def about():
 @main.route('/search/<int:type_sort>',methods=['GET', 'POST'])
 def search(type_sort=0):
     page = request.args.get('page', 1, type=int) 
-
     if type_sort==0:
         posts =  Post.query.paginate(page=page, per_page=5)
     elif type_sort==1:
@@ -89,6 +88,25 @@ def search(type_sort=0):
         searched_val += ']'
         searched_val = '[' + searched_val
 
-    return render_template('searched_posts.html', posts = search_result(searched_val,page,type_sort),form =form,form_val=searched_val)
+    return render_template('searched_posts.html', posts = search_result(searched_val,page,type_sort),form =form,form_val=searched_val, type_sort=type_sort)
 
 
+
+@main.route('/more_search',methods=['GET', 'POST'])
+def more_search(type_sort=0):
+    page = request.args.get('page', 1, type=int)
+    if type_sort==0:
+        posts =  Post.query.paginate(page=page, per_page=5)
+    elif type_sort==1:
+        posts =  Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    elif type_sort==2:
+        posts = db.session.query(Post).join(Upvote).filter(Post.id==Upvote.post_id).group_by(Post.id).order_by(func.count(Post.id).desc()).paginate(page=page, per_page=5)
+
+    time.sleep(.3)
+
+    searched_val = request.args.get('form_val')
+    if searched_val==None:
+        return render_template('searched_posts_loop_partial.html', posts = posts,form_val=searched_val, page=page, type_sort=type_sort)
+   
+
+    return render_template('searched_posts_loop_partial.html', posts = search_result(searched_val,page,type_sort), page=page, form_val=searched_val, type_sort=type_sort)

@@ -1,0 +1,14 @@
+{% for post in posts.items %}
+    {{render_partial('post_template_partial.html', post=post)}}
+{% endfor %}
+
+{% if posts.has_next  %}
+    <div class="scroll-trigger "
+        hx-get="{{ url_for('main.more_search', page=page+1, type_sort=type_sort, form_val=form_val) }}"
+        hx-trigger="revealed"
+        hx-swap="outerHTML">
+        <center><img src="/static/assets/bars.svg" width="150px" class="htmx-indicator"/></center>
+    </div>
+{% else %}
+    <center><h5>No more posts</h5></center>
+{% endif %}
