@@ -11500,3 +11500,8 @@ img.htmx-indicator {
   align-content: center;
   width: 30%;
 }
+
+.update-delete{
+  font-weight: 500;
+  margin-left: auto;
+}
