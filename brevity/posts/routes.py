@@ -181,10 +181,14 @@ def delete_resource(resource_id):
 def delete_comment(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     
-    if comment.author != current_user:
+    if comment.author != current_user and comment.post.author != current_user:
         abort(403)
     PostId = comment.post.id
     db.session.delete(comment)
     db.session.commit()
-    flash('Your comment has been deleted!', 'success')
+
+    if comment.author==current_user:
+        flash('Your comment has been deleted!', 'success')
+    else:
+        flash('Comment has been deleted!', 'success')
     return redirect(url_for('posts.post', post_id=PostId))
