@@ -6,6 +6,9 @@ from wtforms.validators import ValidationError, StopValidation
 from collections import Iterable
 from werkzeug.datastructures import FileStorage
 
+from brevity.models import Downvote, Post, Upvote, User
+from brevity import db
+import math
 
 
 def save_file(form_file):
@@ -75,3 +78,58 @@ def getTagData(post):
     sz = len(tagData)
     tagData = tagData[:sz-1]
     return tagData
+
+def calculateContribution(post_id):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+
+    listOfUpvotingPersons = db.session.query(User).join(Post).join(Upvote).filter(User.id==Post.user_id).filter(Post.id==Upvote.post_id).filter(User.id==post.user_id).with_entities(Upvote.user_id)
+    impactOfUpvote = calculateWeightedAvg(listOfUpvotingPersons)
+
+    listOfDownvotingPersons = db.session.query(User).join(Post).join(Downvote).filter(User.id==Post.user_id).filter(Post.id==Downvote.post_id).filter(User.id==post.user_id).with_entities(Downvote.user_id)
+    impactOfDownvote = calculateWeightedAvg(listOfDownvotingPersons)
+
+    contribution = impactOfUpvote-impactOfDownvote
+    return contribution
+
+def calculateWeightedAvg(listOfPersons):
+    numerator = 0
+    denominator = 0
+    for i in listOfPersons:
+        user = User.query.filter_by(id=i.user_id).first_or_404()
+        numerator += (max(user.contribution,0)+1)*impactFactor(max(user.contribution,0)+1)
+        denominator += impactFactor(max(user.contribution,0)+1)
+    try:
+        impactOfvote = math.ceil(numerator/denominator)
+    except:
+        impactOfvote = 0
+    return impactOfvote
+
+def impactFactor(contribution):
+    if contribution<=2:
+        return 1
+    elif contribution<=7:
+        return 2
+    elif contribution<=11:
+        return 3
+    elif contribution<=17:
+        return 4
+    elif contribution<=29:
+        return 5
+    elif contribution<=41:
+        return 6
+    elif contribution<=47:
+        return 7
+    elif contribution<=53:
+        return 8
+    elif contribution<=61:
+        return 9
+    elif contribution<=71:
+        return 10
+    elif contribution<=79:
+        return 11
+    elif contribution<=97:
+        return 12
+    else:
+        return 13
+    
+    

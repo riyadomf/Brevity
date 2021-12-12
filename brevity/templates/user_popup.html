@@ -1,0 +1,12 @@
+<div class="container">
+    <img src="{{ url_for('static', filename = 'profile_pics/' + user.image_file)}}" width="70" style="border: 0px;">
+    
+</div>
+
+<div class="table">
+    <tr>
+        
+        <td><p>{{user.username}}<br>contribution : {{user.contribution}}<br>Total posts : {{user.posts.count()}}</p>
+        </td>
+    </tr>
+</div>

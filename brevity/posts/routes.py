@@ -6,7 +6,7 @@ from brevity import db
 from brevity.main.forms import SearchForm
 from brevity.posts.forms import CommentForm, PostForm
 from brevity.models import Comment, Post, ResourceFile, Tag
-from brevity.posts.utils import delete_file, save_file, getTagData
+from brevity.posts.utils import calculateContribution, delete_file, save_file, getTagData
 
 posts = Blueprint('posts', '__name__')
 
@@ -96,20 +96,28 @@ def vote_action(post_id, action):
     if action == 'upvote':
         current_user.upvote_post(post)
         db.session.commit()
+        post.author.contribution = calculateContribution(post_id)
+        db.session.commit()
         return render_template('vote_section.html', post=post)
 
     elif action == 'downvote':
         current_user.downvote_post(post)
+        db.session.commit()
+        post.author.contribution = calculateContribution(post_id)
         db.session.commit()
         return render_template('vote_section.html', post=post)
 
     elif action =='unauthorized_upvote':
         current_user.upvote_post(post)
         db.session.commit()
+        post.author.contribution = calculateContribution(post_id)
+        db.session.commit()
         return redirect(request.referrer)
 
     elif action == 'unauthorized_downvote':
         current_user.downvote_post(post)
+        db.session.commit()
+        post.author.contribution = calculateContribution(post_id)
         db.session.commit()
         return redirect(request.referrer)
 
