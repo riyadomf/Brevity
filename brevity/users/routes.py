@@ -148,3 +148,9 @@ def reset_token(token):
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
+
+@users.route('/user/<username>/popup')
+def user_popup(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    print(user)
+    return render_template('user_popup.html', user=user)

@@ -21,7 +21,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True)                    #By default SQLAlchemy guess the relationship to be one to many as posts returns a list of post.
+    contribution =  db.Column(db.Integer, default=0)
+    posts = db.relationship('Post', backref='author', cascade="all, delete", lazy='dynamic')                    #By default SQLAlchemy guess the relationship to be one to many as posts returns a list of post.
                                                                                     #  If you would want to have a one-to-one relationship you can pass uselist=False to relationship().
     upvoted = db.relationship('Upvote', foreign_keys='Upvote.user_id', backref='user', lazy='dynamic')
     downvoted = db.relationship('Downvote', foreign_keys='Downvote.user_id', backref='user', lazy='dynamic')
