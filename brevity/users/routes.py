@@ -154,3 +154,9 @@ def user_popup(username):
     user = User.query.filter_by(username=username).first_or_404()
     print(user)
     return render_template('user_popup.html', user=user)
+
+@users.route("/top_contributors")
+def top_contributors():
+    users = User.query.order_by(User.contribution.desc()).limit(10)
+    form = SearchForm()
+    return render_template('top_contributors.html',users=users,form=form)

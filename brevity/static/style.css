@@ -11494,3 +11494,9 @@ img.htmx-indicator {
   opacity: 1;
   transition: opacity .25s ease-out;
 }
+
+.contributiontable{
+  margin: auto;
+  align-content: center;
+  width: 30%;
+}
