@@ -29,20 +29,24 @@ def home(type=0):
         #posts =  Post.query.order_by(func.count(Post.upvotes)).paginate(page=page, per_page=5)
     
 
-    return render_template('home.html', posts = posts)
+    return render_template('home.html', posts = posts, type = type)
                                                     #paginate() returns a pagination object which has necessary attributes and methods.
                                                     #dir(object): returns all the attributes and methods of that object
 
 
 
 
-@main.route("/feed/more_posts/<int:page>")
-def more_posts(page: int):
-    posts = Post.query.paginate( page=page, per_page=5)
+@main.route("/home/more_posts/<int:page>/<int:type>")
+def more_posts(page: int, type=0):
+    if type==0:
+        posts = Post.query.paginate( page=page, per_page=5)
+    elif type==1:
+        posts =  Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    elif type==2:
+        posts = db.session.query(Post).join(Upvote).filter(Post.id==Upvote.post_id).group_by(Post.id).order_by(func.count(Post.id).desc()).paginate(page=page, per_page=5)
+    
     time.sleep(.3)                                        #sleep to prove infinite scrolling
-    return render_template("posts_loop_partial.html", posts=posts, page=page)
-
-
+    return render_template("home_posts_loop_partial.html", posts=posts, page=page, type = type)
 
 
 

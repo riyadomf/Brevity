@@ -1,6 +1,7 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from sqlalchemy.orm import backref
 from brevity import db, login_manager
 from flask_login import UserMixin
 
@@ -24,7 +25,8 @@ class User(db.Model, UserMixin):
                                                                                     #  If you would want to have a one-to-one relationship you can pass uselist=False to relationship().
     upvoted = db.relationship('Upvote', foreign_keys='Upvote.user_id', backref='user', lazy='dynamic')
     downvoted = db.relationship('Downvote', foreign_keys='Downvote.user_id', backref='user', lazy='dynamic')
-    commented = db.relationship('Comment', backref='author', lazy=True)      
+    commented = db.relationship('Comment', backref='author', lazy=True)     
+    bookmarked = db.relationship('Bookmark', foreign_keys='Bookmark.user_id', backref='user', lazy='dynamic' ) 
 
     def upvote_post(self, post):
         if not self.has_upvoted_post(post):
@@ -44,7 +46,6 @@ class User(db.Model, UserMixin):
             Upvote.user_id == self.id,
             Upvote.post_id == post.id).count() > 0
 
-
     def downvote_post(self, post):
         if not self.has_downvoted_post(post):
             downvote = Downvote(user_id=self.id, post_id=post.id)
@@ -62,8 +63,21 @@ class User(db.Model, UserMixin):
         return Downvote.query.filter(
             Downvote.user_id == self.id,
             Downvote.post_id == post.id).count() > 0
-    
 
+    def bookmark_post(self, post):
+        if not self.has_bookmarked_post(post):
+            bookmark = Bookmark(user_id=self.id, post_id=post.id)
+            db.session.add(bookmark)
+        else:
+            Bookmark.query.filter_by(
+                user_id=self.id,
+                post_id=post.id).delete()
+
+    def has_bookmarked_post(self, post):
+        return Bookmark.query.filter(
+            Bookmark.user_id == self.id,
+            Bookmark.post_id == post.id).count() > 0
+    
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -95,7 +109,8 @@ class Post(db.Model):
     upvotes = db.relationship('Upvote', backref='post', cascade="all, delete", lazy='dynamic')
     downvotes = db.relationship('Downvote', backref='post',cascade="all, delete", lazy='dynamic')
     comments = db.relationship('Comment', backref='post',cascade="all, delete", lazy='dynamic')
-    resources = db.relationship('ResourceFile', backref='post',cascade="all, delete", lazy='dynamic')       
+    resources = db.relationship('ResourceFile', backref='post',cascade="all, delete", lazy='dynamic') 
+    bookmarks = db.relationship('Bookmark', backref='post', cascade="all, delete", lazy='dynamic')
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
@@ -111,6 +126,11 @@ class Upvote(db.Model):
 
 
 class Downvote(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+
+
+class Bookmark(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
 

@@ -113,6 +113,11 @@ def vote_action(post_id, action):
         db.session.commit()
         return redirect(request.referrer)
 
+    elif action == 'bookmark':
+        current_user.bookmark_post(post)
+        db.session.commit()
+        return render_template('vote_section.html', post=post)
+
 
 @posts.route("/post/<int:post_id>", methods=['GET', 'POST'])            #'int:' imposes that post_id must be int.
 def post(post_id):

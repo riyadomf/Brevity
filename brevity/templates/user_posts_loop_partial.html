@@ -1,0 +1,14 @@
+{% for post in posts.items %}
+    {{render_partial('post_template_partial.html', post=post)}}
+{% endfor %}
+
+{% if posts.has_next  %}
+    <div class="scroll-trigger "
+        hx-get="/user/more_posts/{{user.username}}/{{ (page+1) }}"
+        hx-trigger="revealed"
+        hx-swap="outerHTML">
+        <center><img src="/static/assets/bars.svg" width="150px" class="htmx-indicator"/></center>
+    </div>
+{% else %}
+    <center><h5>No more posts</h5></center>
+{% endif %}

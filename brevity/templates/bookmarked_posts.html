@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <center><h3 class="mb-3">Bookmarks by {{ user.username }} ({{ posts.total }})</h3></center>
+    {{ render_partial('bookmarked_posts_loop_partial.html', user=user, posts=posts, page=1 ) }}
+
+{% endblock content %}

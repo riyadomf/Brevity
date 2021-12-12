@@ -1,14 +1,15 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import current_user, login_user, logout_user, login_required
 from brevity import db, bcrypt
-from brevity.models import User, Post
+from brevity.models import Bookmark, User, Post
 from brevity.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                     RequestResetForm, ResetPasswordForm)
 from brevity.users.utils import save_picture, send_reset_email                     
 from brevity.main.forms import SearchForm
+import time
+
+
 users = Blueprint('users', '__name__')
-
-
 
 @users.route("/register", methods=['GET', 'POST'])
 def register():
@@ -70,7 +71,7 @@ def account():
                             image_file = image_file, form = form)
 
 
-@users.route("/user/<string:username>")
+@users.route("/user/posts/<string:username>")
 def user_posts(username):
     form=SearchForm()
     page = request.args.get('page', 1, type=int)
@@ -82,6 +83,40 @@ def user_posts(username):
     return render_template('user_posts.html', posts=posts, form=form, user=user)
 
 
+@users.route("/user/more_posts/<string:username>/<int:page>")
+def more_user_posts(username, page):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = (Post.query.filter_by(author = user)
+        .order_by(Post.date_posted.desc())
+        .paginate(page = page, per_page = 5)
+        )
+    time.sleep(.3)
+    return render_template('user_posts_loop_partial.html', posts=posts, user=user, page=page)
+
+ 
+@users.route("/user/bookmarks/<string:username>")
+def bookmarked_posts(username):
+    form=SearchForm()
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    bookmarked_posts = Bookmark.query.filter_by(user_id=user.id).with_entities(Bookmark.post_id)
+    posts = (Post.query.filter(Post.id.in_(bookmarked_posts))
+                .order_by(Post.date_posted.desc())
+                .paginate(page = page, per_page = 5)
+            )
+    return render_template('bookmarked_posts.html', posts=posts, form=form, user=user)
+
+
+@users.route("/user/more_bookmarks/<string:username>/<int:page>")
+def more_bookmarked_posts(username, page):
+    user = User.query.filter_by(username=username).first_or_404()
+    bookmarked_posts = Bookmark.query.filter_by(user_id=user.id).with_entities(Bookmark.post_id)
+    posts = (Post.query.filter(Post.id.in_(bookmarked_posts))
+                .order_by(Post.date_posted.desc())
+                .paginate(page = page, per_page = 5)
+            )
+    time.sleep(.3)            
+    return render_template('bookmarked_posts_loop_partial.html', posts=posts, user=user, page=page)
 
 
 @users.route("/reset_password", methods=['GET', 'POST'])
