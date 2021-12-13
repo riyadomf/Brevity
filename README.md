@@ -98,41 +98,52 @@ python run.py
 <p  align="center">
   <img  src="brevity/static/screenshots/Home.png"  height = "400"/>
 </p>
+<p align="center">Home Page</p>
 
 <p  align="center">
   <img  src="brevity/static/screenshots/sort_by.png"height="400"/> 
 </p>
-
+<p align="center">Sort</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/post_update_delete.png"  height = "400"/>
 </p>
-
+<p align="center">Post Update, Delete</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/resource_modal.png"  height = "400"/>
 </p>
+<p align="center">Resource Files</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/comment.png"  height = "400"/>
 </p>
+<p align="center">Comment</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/Rich_text_editor.png"  height = "400"/>
 </p>
+<p align="center">Rich Text Editor</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/rich_text_output.png"  height = "400"/>
 </p>
+<p align="center">Rich Text Editor output</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/search_result.png"  height = "400"/>
 </p>
+<p align="center">Search Result</p>
 <p  align="center">
-  <img  src="brevity/static/screenshots/bookmarks.png"  height = "400"/></p>
+  <img  src="brevity/static/screenshots/bookmarks.png"  height = "400"/>
+</p>
+<p align="center">Bookmark</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/individual_post.png"  height = "400"/>
 </p>
+<p align="center">Individual Post</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/user_summary_popover.png"  height = "400"/>
 </p>
+<p align="center">User Summary Popover</p>
 <p  align="center">
   <img  src="brevity/static/screenshots/Contribution_list.png"  height = "400"/>
 </p>
+<p align="center">Contributor List</p>
 
 ## Contributors
 - <b>[Jahedul Alam Junaed (2017331025)](https://github.com/Nowshadjunaed)</b>
