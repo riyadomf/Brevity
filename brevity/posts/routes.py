@@ -133,7 +133,7 @@ def post(post_id):
         db.session.commit()
         flash('Your comment has been posted', 'success')
         return redirect(url_for('posts.post', post_id=post.id))
-    return render_template('post.html', title="post.title",form = form, post=post, comments = comments)
+    return render_template('post.html', title=post.title,form = form, post=post, comments = comments)
 
 
 

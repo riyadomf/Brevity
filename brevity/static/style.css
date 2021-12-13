@@ -11378,7 +11378,7 @@ font-weight: 600;
 
 .comment_data{
 white-space: pre-line;
-width: 30%;
+/* width: 30%; */
 margin-left: 47px;
 }
 
@@ -11504,4 +11504,9 @@ img.htmx-indicator {
 .update-delete{
   font-weight: 500;
   margin-left: auto;
+}
+
+.comment_box{
+  margin: auto;
+  align-content: center;
 }

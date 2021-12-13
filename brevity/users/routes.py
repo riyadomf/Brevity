@@ -104,7 +104,7 @@ def bookmarked_posts(username):
                 .order_by(Post.date_posted.desc())
                 .paginate(page = page, per_page = 5)
             )
-    return render_template('bookmarked_posts.html', posts=posts, form=form, user=user)
+    return render_template('bookmarked_posts.html', posts=posts, form=form, user=user, title="Bookmarks")
 
 
 @users.route("/user/more_bookmarks/<string:username>/<int:page>")
@@ -159,4 +159,4 @@ def user_popup(username):
 def top_contributors():
     users = User.query.order_by(User.contribution.desc()).limit(10)
     form = SearchForm()
-    return render_template('top_contributors.html',users=users,form=form)
+    return render_template('top_contributors.html',users=users,form=form, title="Top Contributors")
