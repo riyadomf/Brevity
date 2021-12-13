@@ -56,3 +56,85 @@ Currently most of us use Facebook for this purpose which is overwhelming and dis
 *  Language: Python
 *  Database: MySQL
 *  Frontend: HTML, CSS, JavaScript, HTMX
+
+## Clone this Project
+```
+git clone https://github.com/riyadomf/Brevity.git
+```
+## Run the Project in your Machine
+
+Install virtual environment:
+```
+pip install virtualenv
+```
+Create your own environment:
+```
+virtualenv <yourenvname>
+```
+Activate your environemnt:
+```
+source <yourenvname>/Scripts/activate
+```
+Now install requirements.txt:
+```
+pip install -r requirements.txt
+```
+Edit the file named ".env.example" and assign SECRET_KEY, SQLALCHEMY_DATABASE_URI, MAIL_USERNAME, MAIL_PASSWORD according to instructions written in the file and rename the file name as ".env".  
+<br>
+Create database from python CLI before running the server:
+```
+from brevity import create_app
+from brevity import db
+app = create_app()
+app.app_context().push()
+db.create_all()
+```
+Then run the server:
+```
+python run.py
+```
+## Some Snapshots
+
+<p  align="center">
+  <img  src="brevity/static/screenshots/Home.png"  height = "400"/>
+</p>
+
+<p  align="center">
+  <img  src="brevity/static/screenshots/sort_by.png"height="400"/> 
+</p>
+
+<p  align="center">
+  <img  src="brevity/static/screenshots/post_update_delete.png"  height = "400"/>
+</p>
+
+<p  align="center">
+  <img  src="brevity/static/screenshots/resource_modal.png"  height = "400"/>
+</p>
+<p  align="center">
+  <img  src="brevity/static/screenshots/comment.png"  height = "400"/>
+</p>
+<p  align="center">
+  <img  src="brevity/static/screenshots/Rich_text_editor.png"  height = "400"/>
+</p>
+<p  align="center">
+  <img  src="brevity/static/screenshots/rich_text_output.png"  height = "400"/>
+</p>
+<p  align="center">
+  <img  src="brevity/static/screenshots/search_result.png"  height = "400"/>
+</p>
+<p  align="center">
+  <img  src="brevity/static/screenshots/bookmarks.png"  height = "400"/></p>
+<p  align="center">
+  <img  src="brevity/static/screenshots/individual_post.png"  height = "400"/>
+</p>
+<p  align="center">
+  <img  src="brevity/static/screenshots/user_summary_popover.png"  height = "400"/>
+</p>
+<p  align="center">
+  <img  src="brevity/static/screenshots/Contribution_list.png"  height = "400"/>
+</p>
+
+## Contributors
+- <b>[Jahedul Alam Junaed (2017331025)](https://github.com/Nowshadjunaed)</b>
+- <b>[Omar Faruqe Riyad (2017331042)](https://github.com/riyadomf)</b>
+

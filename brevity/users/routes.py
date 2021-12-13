@@ -152,7 +152,6 @@ def reset_token(token):
 @users.route('/user/<username>/popup')
 def user_popup(username):
     user = User.query.filter_by(username=username).first_or_404()
-    print(user)
     return render_template('user_popup.html', user=user)
 
 @users.route("/top_contributors")
