@@ -36,7 +36,7 @@
             </div>
             <!-- tag end -->
             
-            <p class="article-content">{{ post.content }}</p>                    <!-- limit the post display for long posts-->
+            <p class="article-content">{{ post.content|safe }}</p>                    <!-- limit the post display for long posts-->
         
 
             <!--upvote, downvote div-->

@@ -7,11 +7,12 @@ If we import something from __init__.py module then no need to write "from brevi
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, config
+from flask_login import LoginManager
 from flask_mail import Mail
 from brevity.config import Config
 import jinja_partials
 from flask_migrate import Migrate
+from flask_ckeditor import CKEditor
 
 
 db = SQLAlchemy()
@@ -21,6 +22,7 @@ login_manager.login_view = 'users.login'       #when a user attempts to access a
 login_manager.login_message_category = 'info'
 mail = Mail()
 migrate = Migrate()
+ckeditor = CKEditor() 
  
                                             #init_app() - this method is written inside each extension. 
                                             # The init_app method exists so that the extension object (e.g. flask_login object) 
@@ -39,7 +41,8 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     mail.init_app(app)
     migrate.init_app(app, db)
-    
+    ckeditor.init_app(app)
+
     from brevity.main.routes import main
     from brevity.users.routes import users
     from brevity.posts.routes import posts
