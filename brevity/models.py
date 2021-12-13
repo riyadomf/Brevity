@@ -1,7 +1,6 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
-from sqlalchemy.orm import backref
 from brevity import db, login_manager
 from flask_login import UserMixin
 import os
