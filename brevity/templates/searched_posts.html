@@ -15,12 +15,15 @@
     </div>
 
     <br/>
+    
+    {% if form_val %}
     {% if posts.items %}
     <h4>Showing search results for: <em>"{{ form_val }}"</em></h4>
     {% else %}
     <h4>Looks like there aren’t any results for <em>"{{form_val}}"</em>. Try double-checking your spelling or searching for a related topic.</h4>
     {% endif %}
     <br/>
+    {% endif %}
 
     <!-- posts start-->
     {{ render_partial('searched_posts_loop_partial.html', posts=posts, page=1, type_sort=type_sort, form_val=form_val) }}
