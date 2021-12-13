@@ -35,18 +35,15 @@ class User(db.Model, UserMixin):
     def upvote_post(self, post):
         if not self.has_upvoted_post(post):
             upvote = Upvote(user_id=self.id, post_id=post.id)
-            post.author.contribution += int(os.getenv('impactOfUpvote'))
             db.session.add(upvote)
             if self.has_downvoted_post(post):
                 Downvote.query.filter_by(
                 user_id=self.id,
                 post_id=post.id).delete()
-                post.author.contribution += int(os.getenv('impactOfDownvote'))
         else:
             Upvote.query.filter_by(
                 user_id=self.id,
                 post_id=post.id).delete()
-            post.author.contribution -= int(os.getenv('impactOfUpvote'))
 
     def has_upvoted_post(self, post):
         return Upvote.query.filter(
@@ -57,18 +54,15 @@ class User(db.Model, UserMixin):
         if not self.has_downvoted_post(post):
             downvote = Downvote(user_id=self.id, post_id=post.id)
             db.session.add(downvote)
-            post.author.contribution -= int(os.getenv('impactOfDownvote'))
+
             if self.has_upvoted_post(post):
                 Upvote.query.filter_by(
                 user_id=self.id,
                 post_id=post.id).delete()
-                post.author.contribution -= int(os.getenv('impactOfUpvote'))
         else:
             Downvote.query.filter_by(
                 user_id=self.id,
                 post_id=post.id).delete()
-            post.author.contribution += int(os.getenv('impactOfDownvote'))
-
     def has_downvoted_post(self, post):
         return Downvote.query.filter(
             Downvote.user_id == self.id,

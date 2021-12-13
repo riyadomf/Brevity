@@ -9,7 +9,7 @@ from werkzeug.datastructures import FileStorage
 from brevity.models import Downvote, Post, Upvote, User
 from brevity import db
 import math
-
+from sqlalchemy import func
 
 def save_file(form_file):
     random_hex = secrets.token_hex(8)                                           # To randomize the name of the uploaded image so that the name doesn't collide with the already uploaded ones 
@@ -79,3 +79,19 @@ def getTagData(post):
     tagData = tagData[:sz-1]
     return tagData
 
+
+def calculateContribution(post_id):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+
+    totalUpvote = db.session.query(User).join(Post).join(Upvote).filter(User.id==Post.user_id).filter(Post.id==Upvote.post_id).filter(User.id==post.user_id).with_entities(Upvote.user_id).count()
+    impactOfUpvote = totalUpvote*int(os.getenv('impactOfUpvote'))
+
+    totalDownvote = db.session.query(User).join(Post).join(Downvote).filter(User.id==Post.user_id).filter(Post.id==Downvote.post_id).filter(User.id==post.user_id).with_entities(Downvote.user_id).count()
+    impactOfDownvote = totalDownvote*int(os.getenv('impactOfDownvote'))
+
+    contribution = impactOfUpvote-impactOfDownvote
+    return contribution
+                                                                 
+                                                                                                                                                                                                             
+
+                                                                                                                                                                                                             
