@@ -57,6 +57,9 @@ Currently most of us use Facebook for this purpose which is overwhelming and dis
 *  Database: MySQL
 *  Frontend: HTML, CSS, JavaScript, HTMX
 
+## Presentation video 
+<a href="https://youtu.be/QqjD9XOh6UI"> <h3>Brevity presentation</h3> </a>
+
 ## Clone this Project
 ```
 git clone https://github.com/riyadomf/Brevity.git
