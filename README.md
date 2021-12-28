@@ -149,6 +149,7 @@ python run.py
 <p align="center">Contributor List</p>
 
 ## Contributors
-- <b>[Jahedul Alam Junaed (2017331025)](https://github.com/Nowshadjunaed)</b>
 - <b>[Omar Faruqe Riyad (2017331042)](https://github.com/riyadomf)</b>
+- <b>[Jahedul Alam Junaed (2017331025)](https://github.com/Nowshadjunaed)</b>
+
 

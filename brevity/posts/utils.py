@@ -8,8 +8,6 @@ from werkzeug.datastructures import FileStorage
 
 from brevity.models import Downvote, Post, Upvote, User
 from brevity import db
-import math
-from sqlalchemy import func
 
 def save_file(form_file):
     random_hex = secrets.token_hex(8)                                           # To randomize the name of the uploaded image so that the name doesn't collide with the already uploaded ones 

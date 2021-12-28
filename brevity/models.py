@@ -3,7 +3,6 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from brevity import db, login_manager
 from flask_login import UserMixin
-import os
 from dotenv import load_dotenv
 load_dotenv()
 
