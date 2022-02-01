@@ -1,5 +1,5 @@
 # Brevity
-### <b>A blog site made for experience and resource sharing.</b>
+### <b>A blog site made for experience and resource sharing. [Brevity](https://brevity42.herokuapp.com/) is currently hosted on heroku platform.</b>
 <br/>
 
 ## Motivation
