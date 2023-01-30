@@ -1,5 +1,5 @@
 # Brevity
-### <b>A blog site made for experience and resource sharing. [Brevity](http://brevityflask.pythonanywhere.com/) is currently hosted on heroku platform.</b>
+### <b>A blog site made for experience and resource sharing. [Brevity](http://brevityflask.pythonanywhere.com) is currently hosted on heroku platform.</b>
 <br/>
 
 ## Motivation
